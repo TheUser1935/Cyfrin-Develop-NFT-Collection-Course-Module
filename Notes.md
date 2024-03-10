@@ -45,6 +45,20 @@ Beacuse of this practise of using off-chain, most NFT marketplaces won't actuall
 
 Keeping things off chain makes things hard to cryptographically prove and can reduce the kind of experience you envisioned for a project. For example, if you had a creature battle game on-chain, it becomes much harder to have the creatures interact with their assigned 'attributes' if that metadata is off-chain instead of on-chain.
 
+### URI vs URL
+
+**URL - Uniform Resource Locator**
+
+A URL is a type of URI that provides a means of locating a resource on a network.
+
+**URI - Uniform Resource Identifier**
+
+A unique sequence of characters that can be used to identify anything, including real-worl objects, including: concepts, people, information resources such as webpages or books. Some URIs are used for locating resources - URLs
+
+While the URL can provide a resource location, a URI can identifies the resource by name at the specified location or URL.
+
+It is an endpoint, and the tokenURI function in the ERC721 takes a uint256 tokenId as an input and returns a string of metadata - i.e. JSON formatted metadata
+
 ### What is IPFS?
 
 IPFS stands for InterPlanetary File System. It is a protocol and network designed to create a distributed system for storing and accessing files, websites, and other data in a decentralized manner. IPFS aims to replace the traditional client-server model of the internet with a peer-to-peer model, where data is distributed across multiple nodes instead of being stored on centralized servers.
@@ -73,3 +87,34 @@ IPFS has a wide range of applications, including:
 1. Get IPFS
 2. Add tokenURI json file to IPFS
 3. Add IPFS URI to your NFT URI
+
+## Deeper Dive into IPFS
+
+IPFS work very similiar to a blockchain in the decentralisation approach, however, there is no mining involved and rather what happens is that the IPFS nodes shares the same hashing algorithms used - and each hash is unique to that specific asset/file.
+
+IPFS nodes are much faster and easier to set up and get running than blockchain nodes.
+
+A big difference when compared to the blockchain is that there is no execution, there is no smart contracts. It is just decentralised storage.
+
+So, to walk through it: 1. I have a file/code that I want to make accessible and decide upon IPFS 2. IPFS creates a hash of our file 3. The node we have pins that hashed file 4. The other nodes all talk to each other, and then someone at another node asks for the data assigned with the unique hash created before 5. The nodes then communicate until they find someone that has that hashed data. It is also possible for other nodes, besides the original to create copies of the data and pin it too --> this results in a bunch of decentralised sets of that data
+
+![Basic Workings of IPFS](IPFS.png)
+
+### Uploading Files
+
+The Desktop application makes the process of making public, decentralised files super easy. Simply open IPFS from the bottom menu bar and go to the files section. You will see an option to import folders or files.
+
+Simply import the file you desire and it is done.
+
+Once the file has been hashed and is readily available through IPFS, it will generate a CID - the hash identifier for the file.
+
+### Accessing the File
+
+I have the IPFS Desktop Application and the Browser Extension (called _Companion_ by IPFS).
+
+In the browser, the extension will make sure that it can detect an IPFS address and understand what to do with the CID.
+
+The second option is to manually enter the following into the URL bar:
+`https://ipfs.io/ipfs/HASH_CID_VALUE`
+
+This method does not require the installation of the Browser extension as the way it works is by requesting the contents from another node provider to return the contents.
