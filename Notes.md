@@ -112,9 +112,11 @@ Once the file has been hashed and is readily available through IPFS, it will gen
 
 I have the IPFS Desktop Application and the Browser Extension (called _Companion_ by IPFS).
 
-In the browser, the extension will make sure that it can detect an IPFS address and understand what to do with the CID.
+The Desktop application has a tab called 'Explore'. This tab features a search bar where you can enter a CID and have the contents returned.
+
+In the browser, the extension will make sure that it can detect an IPFS address and understand what to do with the CID. Instead of the URL beginning with https://, the format for the url is: `ipfs://CID_Hash` --> meaning we are looking directly at the ipfs network.
 
 The second option is to manually enter the following into the URL bar:
 `https://ipfs.io/ipfs/HASH_CID_VALUE`
 
-This method does not require the installation of the Browser extension as the way it works is by requesting the contents from another node provider to return the contents.
+This method does not require the installation of the Browser extension as the way it works is by requesting the contents from another node provider to return the contents. It relys on the ipfs.io website being up, instead of the decentralised benefit of simply using ipfs://CID
