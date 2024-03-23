@@ -1,4 +1,8 @@
 {
   "solidity-va.diagnostics.cdili_json.import": true,
-  "solidity-va.preview.markdown": true
+  "solidity-va.preview.markdown": true,
+  "editor.tokenColorCustomizations": {
+    "comments": "",
+    "textMateRules": []
+  }
 }

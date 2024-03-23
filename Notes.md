@@ -120,3 +120,96 @@ The second option is to manually enter the following into the URL bar:
 `https://ipfs.io/ipfs/HASH_CID_VALUE`
 
 This method does not require the installation of the Browser extension as the way it works is by requesting the contents from another node provider to return the contents. It relys on the ipfs.io website being up, instead of the decentralised benefit of simply using ipfs://CID
+
+## Comparing Strings in Solidity
+
+Strings are a special type, essentially being dynamic arrays, therefore they can't be compared directly with '=='.
+
+**What to do then?**
+
+Well, there is a couple of ways of doing this:
+
+1. Since they are arrays, we can loop and caompare at each index in the array(string) and carry out some comparison as we loop through. However, this is tedious to do and we have another option.
+2. Hash each string using encoding which will always encode to a set length and makes for easy comparisons!
+
+### Encoding/Hashing strings
+
+**_Remember, Chisel is a great foundry tool that we can use to walk through the logic in realtime as well to ensure what we are doing makes sense_**
+
+**Chisel Steps Comparing Strings**
+
+1. Enter into Chisel shell
+
+```shell
+$ chisel
+```
+
+2. Create string variables to compare
+
+```shell
+➜ string memory cat = "cat";
+➜ string memory dog = "dog";
+```
+
+3. View current metadata/conversion details of variables
+
+```shell
+➜ cat
+
+Type: string
+├ UTF-8: cat
+├ Hex (Memory):
+├─ Length ([0x00:0x20]): 0x0000000000000000000000000000000000000000000000000000000000000003
+├─ Contents ([0x20:..]): 0x6361740000000000000000000000000000000000000000000000000000000000
+├ Hex (Tuple Encoded):
+├─ Pointer ([0x00:0x20]): 0x0000000000000000000000000000000000000000000000000000000000000020
+├─ Length ([0x20:0x40]): 0x0000000000000000000000000000000000000000000000000000000000000003
+└─ Contents ([0x40:..]): 0x6361740000000000000000000000000000000000000000000000000000000000
+
+```
+
+Right now we see it is a String object, and we can see its hex values.
+
+4. Encode string to Bytes
+
+We can encode strings by doing:
+
+```shell
+➜ bytes memory encodedCat = abi.encodePacked(cat);
+```
+
+5. View the metadata of the bytes encoded string
+
+We can repeat like what we did for original string to print out its current data
+
+```shell
+➜ encodedCat
+➜Type: dynamic bytes
+├ Hex (Memory):
+├─ Length ([0x00:0x20]): 0x0000000000000000000000000000000000000000000000000000000000000003
+├─ Contents ([0x20:..]): 0x6361740000000000000000000000000000000000000000000000000000000000
+├ Hex (Tuple Encoded):
+├─ Pointer ([0x00:0x20]): 0x0000000000000000000000000000000000000000000000000000000000000020
+├─ Length ([0x20:0x40]): 0x0000000000000000000000000000000000000000000000000000000000000003
+└─ Contents ([0x40:..]): 0x6361740000000000000000000000000000000000000000000000000000000000
+```
+
+We can now see that it is of 'dynamic bytes' type.
+
+6. Convert dynamic bytes to hashed bytes32
+
+With the string now in dynamic bytes typing, we can hash a bytes object
+
+```shell
+➜ bytes32 catHash = keccak256(encodedCat);
+```
+
+7. View the bytes32 hash of the original string
+
+We can now print out and look at the hash value of our string!
+
+```shell
+➜ catHash
+Type: bytes32
+└ Data: 0x52763589e772702fa7977a28b3cfb6ca534f0208a2b2d55f7558af664eac478a
+```

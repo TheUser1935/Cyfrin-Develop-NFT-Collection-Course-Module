@@ -39,8 +39,7 @@ help:
 	@echo ""
 	@echo "  make fund [ARGS=...]\n    example: make deploy ARGS=\"--network sepolia\""
 
-fund:
-	@forge script script/Interactions.s.sol:FundFundMe $(NETWORK_ARGS)
+
 
 NETWORK_ARGS := --rpc-url $(ANVIL_RPC_URL) --private-key $(ANVIL_0_PRIVATE_KEY) --broadcast
 
@@ -54,11 +53,14 @@ anvil :; anvil -m 'test test test test test test test test test test test junk' 
 update:; forge update
 
 deploy:
-	@forge script script/DeployFundMe.s.sol:DeployFundMe $(NETWORK_ARGS)
+	@forge script script/DeployBasicNft.s.sol:DeployBasicNft $(NETWORK_ARGS)
 
-fund:
-	@forge script script/Interactions.s.sol:FundFundMe $(NETWORK_ARGS)
+mint:
+	@forge script script/Interactions.s.sol:MintBasicNft $(NETWORK_ARGS)
 
 withdraw:
 	@forge script script/Interactions.s.sol:WithdrawFundMe $(NETWORK_ARGS)
+
+fund:
+	@forge script script/Interactions.s.sol:FundFundMe $(NETWORK_ARGS)
 

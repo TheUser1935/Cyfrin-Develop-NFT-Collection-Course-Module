@@ -12,7 +12,13 @@ remappings = [
 "@solmate/=lib/solmate/src/"
 ]
 
-#Force foundry to use the remappings in the foundry.toml file or remappings.txt
+# Force foundry to use the remappings in the foundry.toml file or remappings.txt
 auto_detect_remappings = false
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+# Filepath permissions
+# The modified foundry.toml gives fs_premission the access to read the whole project directory hence you can read any file or line using vm.readFile() or vm.readLine() cheatcode in foundry
+fs_permissions = [
+    { access = "read", path = "./"},
+]
