@@ -6,6 +6,9 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
 contract MoodNft is ERC721 {
+    //Errors
+    error MoodNft_CantFlipMoodIfNotOwner();
+
     //Use this to keep track of how many tokens/NFTs have been minted
     uint256 private s_tokenCounter;
     //
@@ -94,9 +97,9 @@ contract MoodNft is ERC721 {
                         abi.encodePacked(
                             '{"name": "',
                             name(),
-                            '"description": "A Moody little NFT","attributes": [{"trait_type": "Feeling", "value": 100}],"image": ',
+                            '", "description": "A Moody little NFT", "attributes": [{"trait_type": "Feeling", "value": 100}], "image": "',
                             imageURI,
-                            "}"
+                            '"}'
                         )
                     )
                 )
@@ -104,5 +107,27 @@ contract MoodNft is ERC721 {
         );
 
         return tokenMetadata;
+    }
+
+    function flipMood(uint256 tokenId) public {
+        /*Only want the NFT owner to change the mood
+        Course said that OpenZeppelin has a function called _isApprovedOrOwner which allows us to check if the msg.sender is the owner or approved address of the NFT, but I did not see it in the contracts - did find the ownerOf function 
+        */
+
+        if (msg.sender != ownerOf(tokenId)) {
+            revert MoodNft_CantFlipMoodIfNotOwner();
+        }
+
+        //Flip the mood to the opposite of what it currently is
+        if (s_tokenIdToMood[tokenId] == Mood.HAPPY) {
+            s_tokenIdToMood[tokenId] = Mood.SAD;
+        } else if (s_tokenIdToMood[tokenId] == Mood.SAD) {
+            s_tokenIdToMood[tokenId] = Mood.HAPPY;
+        }
+    }
+
+    //My getter function to get the mood of the NFT
+    function getMood(uint256 tokenId) public view returns (Mood) {
+        return s_tokenIdToMood[tokenId];
     }
 }

@@ -326,3 +326,25 @@ We need to have our JSON Objects sorted and understand them before moving forwar
             )
         );
 ```
+
+## Using Foundry Cheatcode to read files - including SVGs
+
+vm.readFile() is a foundry cheatcode that allows us to have our Foundry project read the contents of a file. This can be very useful in our case where we want to pass in SVG files for a variety of reasons, including testing.
+
+**_Remember to set the permissions to the required folder or root folder of the project_**
+
+```
+fs_permissions = [{ access = "read", path = "./"}]
+```
+
+OR
+
+```
+fs_permissions = [{ access = "read", path = "./broadcast"}]
+```
+
+**Reading file to string variable example**
+
+```
+string memory mySVG = vm.readFile("/path/to/file.svg")
+```

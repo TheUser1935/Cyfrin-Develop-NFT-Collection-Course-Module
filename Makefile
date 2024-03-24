@@ -56,11 +56,10 @@ deploy:
 	@forge script script/DeployBasicNft.s.sol:DeployBasicNft $(NETWORK_ARGS)
 
 mint:
-	@forge script script/Interactions.s.sol:MintBasicNft $(NETWORK_ARGS)
+	@forge script script/BasicNftInteractions.s.sol:MintBasicNft $(NETWORK_ARGS)
 
-withdraw:
-	@forge script script/Interactions.s.sol:WithdrawFundMe $(NETWORK_ARGS)
+mintMood:
+	@forge script script/MoodNftInteractions.s.sol:MintMoodNft $(NETWORK_ARGS)
 
-fund:
-	@forge script script/Interactions.s.sol:FundFundMe $(NETWORK_ARGS)
-
+mintFlipMood:
+	@forge script script/MoodNftInteractions.s.sol:MintFlipMoodNft $(NETWORK_ARGS)

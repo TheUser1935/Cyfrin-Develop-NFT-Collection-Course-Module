@@ -1,5 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
-<text fill="blueviolet" x="0" y="100" font-size="18">
-Hi! This is SVG!
-</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text fill="blueviolet" x="0" y="100" font-size="18">Hi! This is SVG!</text></svg>
