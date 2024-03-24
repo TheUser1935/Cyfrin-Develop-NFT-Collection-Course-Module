@@ -213,3 +213,116 @@ We can now print out and look at the hash value of our string!
 Type: bytes32
 └ Data: 0x52763589e772702fa7977a28b3cfb6ca534f0208a2b2d55f7558af664eac478a
 ```
+
+**Doing this from within a solidity file**
+
+To complete the string encoding and hashing for comparison in a smart contract, we can simply just take the individual steps that we walked through and put them into 1. Which can be used in tests using assert() type checks, or normal comparisons.
+
+```
+string public catVariable = "cat"
+
+assert(keccak256(abi.encodePacked(contractName.functionReturnsString())) == keccak256(abi.encodePacked(catVariable)))
+```
+
+## IPFS and Pinata vs HTTP vs On-Chain SVGs
+
+- Concerns around Websites
+  - If you are using the IPFS website (not pinned decentralised method) or a normal website to host off-chain NFT meta-data, you face the consequence that if the website goes down or is unavailable, you cannot receive that metadata. Plus you wont be able to access any image that it has either.
+  - To get around this, we could look at having other IPFS nodes pin our files so that it is decentralised and still able to be reached
+
+### Pinata ---> [_Pinata Website_](https://www.pinata.cloud/)
+
+Pinata is a leading provider in IPFS storage and are able to easily allow users to pin files across nodes, dedicated gateways, and other features too.
+
+### SVG - Scalable Vector Graphics
+
+Scalable Vector Graphics (SVG) is an XML-based vector image format for defining two-dimensional graphics, having support for interactivity and animation.
+
+In regard to blockchains and NFTs, we can encode our images as SVGs and have our images ENTIRELY stored on the blockchain!
+
+**How do we make an SVG an URI for the NFT on the blockchain?**
+
+1. The first thing we can do is encode our SVG file into Base64.
+
+Base64 doesn't come standard everywhere but it is a command line tool that we can use to encode our SVG into base64 format.
+
+```shell
+$ base64 -i FILENAME.svg
+```
+
+That command will return our SVG in base64 format.
+
+2. From here, we can make browsers load images by using the following URI/URL format:
+
+```shell
+data:image/svg+xml;base64,BASE64OFOURSVG
+```
+
+**EXAMPLE**
+
+```
+data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4NCjx0ZXh0IGZpbGw9ImJsdWV2aW9sZXQiIHg9IjAiIHk9IjUwIiBmb250LXNpemU9IjEwIj4NCkhpISBUaGlzIGlzIFNWRyENCjwvdGV4dD4NCjwvc3ZnPg==
+```
+
+**_We just created a URI that we can use for our tokens!_**
+
+And because it is code based, we can actually interact and update it with our contracts and the blockchain!
+
+## How do we store JSON URI metadata on chain?
+
+We can actually encode JSON objects the same we encoded SVGs - using Base64.
+
+We can do it on chain using something like [OpenZeppelin - Base64](https://docs.openzeppelin.com/contracts/5.x/api/utils#Base64) (part of their utils packaging) to transform bytes32 data into base64 string representation.
+
+**JSON Metadata Object**
+
+We need to have our JSON Objects sorted and understand them before moving forward, so lets talk about that.
+
+1. We need to know what the standard fields are required for our NFT JSON metadata:
+
+   - name
+   - description
+   - attributes
+     - trait types
+   - image
+
+2. Begin to structure the JSON with those fields in mind
+   {
+   "name": 'NAME_VARIABLE',
+   "description": "DESCRIPTION OF NFT",
+   "attributes": [{"trait_type": "NAME_OF_TRAIT_TYPE", "value": VALUE_OF_TRAIT}],
+   "image": 'IMAGE_URI'
+   }
+
+3. With our JSON structured, we can see what we need to pass in from variables and we can begin to look at how and where we do our base64 encoding to complete the JSON object. Remembering, that we will be formatting this JSON in our contract - we can use string.concat() to help us with this but then it is still string, we can just use the abi.encodePacked() function which we have used before. There is a few ways!
+
+   - bytes(string.concat())
+   - bytes32(abi.encodePacked())
+
+4. We also need to remember that we need the beginning of the URI base, which can't be encoded!
+
+5. There will be a few layers of conversions and encoding, bu in the end you should have something like:
+
+```
+   string memory tokenMetadata =
+        //Use string constructor to tranform data from bytes to allow concatination
+        string(
+            //Join base URI with rest of metadata by using abi.encodePacked() and _baseUri function
+            abi.encodePacked(
+                _baseURI(),
+                //We can use the Open Zeppelin Base64 library to convert our bytes32 to base64
+                Base64.encode(
+                    // Use abi encoding inside of bytes transfomer
+                    bytes(
+                        abi.encodePacked(
+                            '{"name": "',
+                            name(),
+                            '"description": "A Moody little NFT","attributes": [{"trait_type": "Feeling", "value": 100}],"image": ',
+                            imageURI,
+                            '}'
+                        )
+                    )
+                )
+            )
+        );
+```
