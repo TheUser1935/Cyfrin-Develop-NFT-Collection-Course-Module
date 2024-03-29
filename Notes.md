@@ -455,7 +455,15 @@ FVM allows smart contract deployement and other advanced concepts to be carried 
 
 ### Transaction Structure for help with following components
 
-Transactions have a structure of: - Nonce: tx count for the account - Gas Price: price per unit of gas (in wei) - Gas limit: max gas this tx can use - To: address the tx is sent to (in case of contract deployment, this will be Null) - Value: amount of wei to send - Data: what to send to the To address (in case of contract deployment, this will be the binary of our smart contract -> contract init code and contract bytecode) - v, r, s: components of tx signature
+Transactions have a structure of:
+
+- Nonce: tx count for the account
+- Gas Price: price per unit of gas (in wei)
+- Gas limit: max gas this tx can use
+- To: address the tx is sent to (in case of contract deployment, this will be Null)
+- Value: amount of wei to send
+- Data: what to send to the To address (in case of contract deployment, this will be the binary of our smart contract -> contract init code and contract bytecode)
+- v, r, s: components of tx signature
 
 ### Solidity Compiler Outputs - Binary and bytecode
 
