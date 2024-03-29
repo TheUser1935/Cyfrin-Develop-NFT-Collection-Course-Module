@@ -310,27 +310,35 @@ We need to have our JSON Objects sorted and understand them before moving forwar
 5. There will be a few layers of conversions and encoding, bu in the end you should have something like:
 
 ```
-   string memory tokenMetadata =
-        //Use string constructor to tranform data from bytes to allow concatination
-        string(
-            //Join base URI with rest of metadata by using abi.encodePacked() and _baseUri function
+   string memory tokenMetadata = string( // Use string constructor to transform data from bytes to allow concatenation
+            // Join base URI with rest of metadata by using abi.encodePacked() and _baseURI function
             abi.encodePacked(
                 _baseURI(),
-                //We can use the Open Zeppelin Base64 library to convert our bytes32 to base64
+                // We can use the Open Zeppelin Base64 library to convert our bytes32 to base64
                 Base64.encode(
-                    // Use abi encoding inside of bytes transfomer
-                    bytes(
+                    // Use abi encoding inside of bytes transformer
+                    bytes( // bytes casting actually unnecessary as 'abi.encodePacked()' returns a bytes
                         abi.encodePacked(
-                            '{"name": "',
+                            "{",
+                            '"title": "Asset Metadata", ',
+                            '"type": "object", ',
+                            '"properties": {',
+                            '"name": {"type": "string", "description": "',
                             name(),
-                            '"description": "A Moody little NFT","attributes": [{"trait_type": "Feeling", "value": 100}],"image": ',
+                            '"}, ',
+                            '"description": {"type": "string", "description": "A Moody little NFT"}, ',
+                            '"attributes": [{"trait_type": "moodiness", "value": 100}], ',
+                            '"image": {"type": "string", "description": "',
                             imageURI,
-                            '}'
+                            '"}',
+                            "}",
+                            "}"
                         )
                     )
                 )
             )
         );
+
 ```
 
 ## Using Foundry Cheatcode to read files - including SVGs
