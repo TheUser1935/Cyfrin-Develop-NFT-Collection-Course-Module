@@ -30,8 +30,8 @@ install-base:
 # Clean the repo
 clean  :; forge clean
 
-dp-sepolia:
-	forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $(SEPOLIA_ALCHEMY_RPC_URL) --private-key $(SEPOLIA_METAMASK_PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+dpMood-sepolia:
+	@forge script script/DeployMoodNft.s.sol:DeployMoodNft --rpc-url $(SEPOLIA_ALCHEMY_RPC_URL) --private-key $(SEPOLIA_METAMASK_PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
 
 help:
 	@echo "Usage:"
@@ -52,8 +52,11 @@ anvil :; anvil -m 'test test test test test test test test test test test junk' 
 # Update Dependencies
 update:; forge update
 
-deploy:
+deployBasic:
 	@forge script script/DeployBasicNft.s.sol:DeployBasicNft $(NETWORK_ARGS)
+
+deployMood:
+	@forge script script/DeployMoodNft.s.sol:DeployMoodNft $(NETWORK_ARGS)
 
 mint:
 	@forge script script/BasicNftInteractions.s.sol:MintBasicNft $(NETWORK_ARGS)
