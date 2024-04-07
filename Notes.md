@@ -706,7 +706,7 @@ function getDataToCallTransfer(address someAddress, uint256 amount) public pure 
 
 ```
 
-**We have now pieced everything we need to be able to directly call the trasnfer function, with inputs, without actually having to call the 'trasnfer(address someAddress, uint256 amount)' function!**
+**We have now pieced everything we need to be able to directly call the transfer function, with inputs, without actually having to call the 'transfer(address someAddress, uint256 amount)' function!**
 
 ```
 function callTransferFunctionWithBinary(address someAddress, uint256 amount) public returns(bytes4, bool) {
